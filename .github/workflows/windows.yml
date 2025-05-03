@@ -1,0 +1,10 @@
+name: Run Action Test on Windows
+
+on: workflow_dispatch
+
+jobs:
+  setup:
+    runs-on: windows-latest
+    steps:
+    - name: System information
+      run: systeminfo

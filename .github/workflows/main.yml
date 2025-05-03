@@ -35,8 +35,7 @@ jobs:
       - name: Setup FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
         
-      - run: ffmpeg -i https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov -c:v copy -c:a copy out.mkv
-
+      - run: ffmpeg -i https://ahrimp4.rule34.xxx//images/2918/887553901a7d1cb6bdcf2bd3ddd6a850.mp4 -i https://rule34video.com/get_file/47/dfe7c09a9d1750cbe82d0c9f26e5a235fd48eda6ed/3610000/3610458/3610458_1080p.mp4/?download_filename=najar-aketa-mikoto-moans-no-x-ray_1080p.mp4&download=true&br=2284 -c:v copy -map 0:v:0 -map 1:a:0 -shortest output.mp4
       #- name: Setup Rclone
         #uses: AnimMouse/setup-rclone@v1
         #with:
@@ -49,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: output
-          path: out.mkv
+          path: output.*

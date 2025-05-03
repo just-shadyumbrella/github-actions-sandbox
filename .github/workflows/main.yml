@@ -26,4 +26,4 @@ jobs:
         #uses: AnimMouse/setup-ffmpeg@v1
 
       - name: Execute bash
-        run: curl -Ls https://github.com/yaudahj/github-actions-sandbox/raw/refs/heads/main/setup.sh | bash
+        run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/1763f28d43f682ad63a3b08dc0f5ebd0d12742d9/setup.sh | bash

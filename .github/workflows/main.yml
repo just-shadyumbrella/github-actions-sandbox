@@ -44,10 +44,10 @@ jobs:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
       - name: Check rclone connection
-        run: "rclone lsd gdrive:"
+        run: "rclone listremotes;rclone lsd gdrive:"
 
       - name: Upload to drive
-        run: "rclone copy ffmpeg-output gdrive:ffmpeg-output;rclone copy ffmpeg-output onedrive:ffmpeg-output"
+        run: "rclone copy ffmpeg-output gdrive:ffmpeg-output;rclone copy ffmpeg-output onedrive:ffmpeg-output;rclone copy ffmpeg-output protondrive:ffmpeg-output;rclone copy ffmpeg-output pcloud:ffmpeg-output"
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4

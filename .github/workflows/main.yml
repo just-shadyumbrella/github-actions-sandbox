@@ -35,7 +35,7 @@ jobs:
       - name: Run FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
         
-      - run: curl -s https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
+      - run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
       
       #- name: Setup Rclone
         #uses: AnimMouse/setup-rclone@v1

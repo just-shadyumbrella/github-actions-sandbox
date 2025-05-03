@@ -24,13 +24,19 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  setup:
+  run:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       #- uses: actions/checkout@v4
+      
+      - name: Setup FFmpeg
+        uses: AnimMouse/setup-ffmpeg@v1
+
+      - name: Execute commands
+        run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
 
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
@@ -39,12 +45,9 @@ jobs:
 
       - name: Check rclone connection
         run: "rclone lsd gdrive:"
-      
-      - name: Setup FFmpeg
-        uses: AnimMouse/setup-ffmpeg@v1
 
-      - name: Execute commands
-        run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
+      - name: Upload to drive
+        run: "rclone copy out.* gdrive:"
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4

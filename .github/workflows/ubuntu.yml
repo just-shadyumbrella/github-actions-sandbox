@@ -1,0 +1,16 @@
+name: Run Action Test on Ubuntu
+
+on: workflow_dispatch
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update package list
+      run: sudo apt-get update -y
+
+    - name: Install packages
+      run: sudo apt-get install -y ffmpeg
+
+    - name: Check ffmpeg
+      run: ffmpeg -version

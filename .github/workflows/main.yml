@@ -35,7 +35,7 @@ jobs:
       - name: Setup FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
         
-      - run: ffmpeg -i https://ahrimp4.rule34.xxx//images/2918/887553901a7d1cb6bdcf2bd3ddd6a850.mp4 -i https://eu-cdn07-prem.boomio-cdn.com/remote_control.php?time=1746286495&cv=ef64c6639b8dc3fa7749e8c6835a0cba&lr=856500&cv2=59c150b8586ba54b7917000c4a44f3d5&file=%2Fvideos%2F3610000%2F3610458%2F3610458_1080p.mp4&download=true&download_filename=najar-aketa-mikoto-moans-no-x-ray_1080p.mp4&cv3=7b148ffed7e5ddccd7d2456825ccfe56&cv4=d0b47954668387241a09b3a146ed701a -c:v copy -map 0:v:0 -map 1:a:0 -shortest output.mp4
+      - run: "ffmpeg -i https://ahrimp4.rule34.xxx//images/2918/887553901a7d1cb6bdcf2bd3ddd6a850.mp4 -i https://eu-cdn07-prem.boomio-cdn.com/remote_control.php?time=1746286495&cv=ef64c6639b8dc3fa7749e8c6835a0cba&lr=856500&cv2=59c150b8586ba54b7917000c4a44f3d5&file=%2Fvideos%2F3610000%2F3610458%2F3610458_1080p.mp4&download=true&download_filename=najar-aketa-mikoto-moans-no-x-ray_1080p.mp4&cv3=7b148ffed7e5ddccd7d2456825ccfe56&cv4=d0b47954668387241a09b3a146ed701a -c:v copy -map 0:v:0 -map 1:a:0 -shortest output.mp4"
       
       #- name: Setup Rclone
         #uses: AnimMouse/setup-rclone@v1

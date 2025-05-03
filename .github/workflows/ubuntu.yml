@@ -6,14 +6,6 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-    - name: Update package list
-      run: sudo apt-get update -y
+     - uses: fawazahmed0/action-debug@main
 
-    - name: Install packages
-      run: sudo apt-get install -y screenfetch neofetch
-
-    - name: Show screenfetch
-      run: screenfetch
-      
-    - name: Show neofetch
-      run: neofetch
+     - run: sleep 3600

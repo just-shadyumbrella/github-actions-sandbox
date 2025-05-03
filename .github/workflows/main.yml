@@ -25,8 +25,11 @@ jobs:
       #- name: Setup FFmpeg
         #uses: AnimMouse/setup-ffmpeg@v1
 
-      - name: Installing packages
-        run: sudo apt-get update -y; sudo apt-get install rclone
+      #- name: Installing packages
+        #run: sudo apt-get update -y; sudo apt-get install rclone;RCLONE_CONF=~/.config/rclone.conf
     
       - name: Copy rclone.conf
-        run: curl -Lo ~/.config/rclone.conf https://github.com/yaudahj/github-actions-sandbox/raw/refs/heads/main/rclone.conf
+        run: curl -Lo $RCLONE_CONF https://github.com/yaudahj/github-actions-sandbox/raw/refs/heads/main/rclone.conf
+
+      - name: Check rclone.conf copied
+        run: more $RCLONE_CONF

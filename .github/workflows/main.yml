@@ -22,11 +22,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Setup FFmpeg
-        uses: AnimMouse/setup-ffmpeg@v1
+      #- name: Setup FFmpeg
+        #uses: AnimMouse/setup-ffmpeg@v1
 
       - name: Installing packages
-        run: sudo apt-get update -y; sudo apt-get instal rclone
+        run: sudo apt-get update -y; sudo apt-get install rclone
     
       - name: Copy rclone.conf
         run: curl -Lo ~/.config/rclone.conf https://github.com/yaudahj/github-actions-sandbox/raw/refs/heads/main/rclone.conf

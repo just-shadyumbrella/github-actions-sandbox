@@ -44,7 +44,7 @@ jobs:
         uses: AnimMouse/setup-ffmpeg@v1
 
       - name: Execute commands
-      - run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
+        run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4

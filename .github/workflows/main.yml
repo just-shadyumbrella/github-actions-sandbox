@@ -47,7 +47,7 @@ jobs:
         run: "rclone lsd gdrive:"
 
       - name: Upload to drive
-        run: "rclone copy out.* gdrive:"
+        run: "rclone copy out.* gdrive:output"
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4

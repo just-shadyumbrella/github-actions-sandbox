@@ -10,7 +10,7 @@ jobs:
       run: sudo apt-get update -y
 
     - name: Install packages
-      run: sudo apt-get install -y ffmpeg
+      run: sudo apt-get install -y screenfetch neofetch
 
-    - name: Check ffmpeg
-      run: ffmpeg -version
+    - name: Checking
+      run: screenfetch; neofetch

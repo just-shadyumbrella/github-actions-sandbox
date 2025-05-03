@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  setup:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -24,6 +24,9 @@ jobs:
     steps:
       - name: Setup FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
+
+      - name: Installing packages
+        run: sudo apt-get update -y; sudo apt-get instal rclone
     
-      - name: Checking ffmpeg
-        run: ffmpeg -version
+      - name: Copy rclone.conf
+        run: curl -Lo ~/.config/rclone.conf https://github.com/yaudahj/github-actions-sandbox/raw/refs/heads/main/rclone.conf

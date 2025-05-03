@@ -30,7 +30,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v4
+      #- uses: actions/checkout@v4
 
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
@@ -39,10 +39,10 @@ jobs:
         
       - run: "rclone lsd gdrive:"
       
-      #- name: Run FFmpeg
+      - name: Run FFmpeg
         #uses: AnimMouse/setup-ffmpeg@v1
         
-      #- run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
+      - run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4

@@ -25,7 +25,7 @@ jobs:
       - name: Setup FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
         
-      - run: ffmpeg -hwaccel auto -i https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov out.mkv
+      - run: ffmpeg -i https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov out.mkv
 
       #- name: Setup Rclone
         #uses: AnimMouse/setup-rclone@v1

@@ -32,19 +32,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Rclone
+        uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+        
+      - run: "rclone lsd gdrive:"
+      
       - name: Run FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
         
       - run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
       
-      #- name: Setup Rclone
-        #uses: AnimMouse/setup-rclone@v1
-        #with:
-          #rclone_config: ${{ secrets.RCLONE_CONFIG }}
-          #disable_base64: true
-        
-      #- run: "rclone lsd gdrive:"
-
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4
         with:

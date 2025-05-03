@@ -36,12 +36,14 @@ jobs:
         uses: AnimMouse/setup-rclone@v1
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
-        
-      - run: "rclone lsd gdrive:"
+
+      - name: Check rclone connection
+        run: "rclone lsd gdrive:"
       
-      - name: Run FFmpeg
-        #uses: AnimMouse/setup-ffmpeg@v1
-        
+      - name: Setup FFmpeg
+        uses: AnimMouse/setup-ffmpeg@v1
+
+      - name: Execute commands
       - run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
       
       - name: Upload a Build Artifact

@@ -12,6 +12,14 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+env:
+  FFMPEG_FLAGS: >-
+    -threads 0
+    -cpu-used 0
+    -c:v libx264 -preset faster
+    -x264-params "opencl=1:frame-threads=4"
+    -vf "format=yuv420p,hwupload"
+    -c:a aac -b:a 128k
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -22,10 +30,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v4
+
       - name: Setup FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
         
-      - run: ffmpeg -i https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov out.mkv
+      - run: ffmpeg -i https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov ${{ env.FFMPEG_FLAGS }} out.mkv
 
       #- name: Setup Rclone
         #uses: AnimMouse/setup-rclone@v1
@@ -34,3 +44,6 @@ jobs:
           #disable_base64: true
         
       #- run: "rclone lsd gdrive:"
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4

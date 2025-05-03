@@ -12,5 +12,8 @@ jobs:
     - name: Install packages
       run: sudo apt-get install -y screenfetch neofetch
 
-    - name: Checking
-      run: screenfetch; neofetch
+    - name: Show screenfetch
+      run: screenfetch
+      
+    - name: Show neofetch
+      run: neofetch

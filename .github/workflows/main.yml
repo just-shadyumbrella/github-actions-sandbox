@@ -13,13 +13,6 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 env:
-  FFMPEG_FLAGS: >-
-    -threads 0
-    -cpu-used 0
-    -c:v libx264 -preset faster
-    -x264-params "opencl=1:frame-threads=4"
-    -vf "format=yuv420p,hwupload"
-    -c:a aac -b:a 128k
   output_folder: ffmpeg-output
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -35,10 +28,7 @@ jobs:
       
       - name: Setup FFmpeg
         uses: AnimMouse/setup-ffmpeg@v1
-
-      - name: Execute commands
-        run: curl -Ls https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/setup.sh | bash
-
+        
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
         with:
@@ -46,8 +36,11 @@ jobs:
 
       - name: Check rclone connection
         run: "rclone listremotes;rclone lsd gdrive:"
-        
-      - run: "rclone copy ffmpeg-output gdrive:${{ env.output_folder }}"
+
+      - name: Execute commands
+        run: curl -fsSL https://gist.github.com/yaudahj/8b6b663cf049770c6a464fd419773b71/raw/run.sh | bash
+
+      #- run: "rclone copy ffmpeg-output gdrive:${{ env.output_folder }}"
       #- run: "rclone copy ffmpeg-output onedrive:${{ env.output_folder }}"
       #- run: "rclone copy ffmpeg-output protondrive:${{ env.output_folder }}"
       #- run: "rclone copy ffmpeg-output pcloud:${{ env.output_folder }}"
@@ -56,4 +49,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: output
-          path: output.*
+          path: output/*

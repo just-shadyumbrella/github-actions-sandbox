@@ -13,10 +13,7 @@ fi
 # Loop through each remote
 for remote in $remotes; do
     echo -e "\nChecking remote: $remote"
-    
-    # Check the remote with verbose listing
-    echo "Running: rclone ls -v $remote"
-    rclone ls -v "$remote"
+    rclone tree -aP --level 1 --dirsfirst "$remote"
     
     # Check the exit status of the command
     if [ $? -eq 0 ]; then

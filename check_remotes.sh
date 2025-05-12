@@ -15,11 +15,11 @@ for remote in $remotes; do
     echo -e "\nChecking remote: $remote"
     
     # Remove the trailing ':' from the remote name
-    clean_remote=${remote%:}
+    #clean_remote=${remote%:}
     
     # Check the remote with verbose listing
-    echo "Running: rclone ls -v $clean_remote"
-    rclone ls -v "$clean_remote"
+    echo "Running: rclone ls -v $remote"
+    rclone ls -v "$remote"
     
     # Check the exit status of the command
     if [ $? -eq 0 ]; then

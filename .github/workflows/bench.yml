@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Run Action
+name: Benchmark cloud remotes connection
 
 # Controls when the workflow will run
 on:

@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 # Get list of remotes
 echo -e "${BOLD}=== List of available rclone remotes: ===${BOLD}"
 remotes=$(rclone listremotes)
-echo
+echo $remotes
 
 # Check if no remotes found
 if [ -z "$remotes" ]; then
@@ -26,7 +26,7 @@ for remote in $remotes; do
     
     # Check the exit status of the command
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Successfully checked \"$remote\"${NC}"
+        echo -e "${GREEN}Successfully checked ${NC}\"${YELLOW}${remote}\"${NC}"
     else
         echo -e "${RED}Error checking \"$remote\"${NC}" >&2
     fi

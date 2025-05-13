@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 # Results formatting script for rclone benchmarks
 # This script processes benchmark results and displays them in a formatted table
 
-echo "${BOLD}=== Cloud Remotes Benchmark Results ===${NC}"
+echo -e "${BOLD}=== Cloud Remotes Benchmark Results ===${NC}"
 echo
 
 # Create header for the results table
@@ -46,12 +46,12 @@ for RESULT_FILE in ./benchmark_results/*_result.txt; do
 done
 
 echo
-echo "${BOLD}=== End of Benchmark Results ===${NC}"
+echo -e "${BOLD}=== End of Benchmark Results ===${NC}"
 
 # Create a GitHub Actions output summary for better visibility in the Actions UI
 if [ -n "$GITHUB_STEP_SUMMARY" ]; then
     {
-        echo "${BOLD}### Cloud Remotes Benchmark Results ###${NC}"
+        echo "## Cloud Remotes Benchmark Results"
         echo
         echo "| Remote | Status | Upload Time | Upload Speed |"
         echo "| ------ | ------ | ----------- | ----------- |"

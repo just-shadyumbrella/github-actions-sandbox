@@ -1,9 +1,16 @@
 #!/bin/bash
 
+# Color output for better readability
+BOLD='\033[1m'
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
+
 # Results formatting script for rclone benchmarks
 # This script processes benchmark results and displays them in a formatted table
 
-echo "=== Cloud Remotes Benchmark Results ==="
+echo "${BOLD}=== Cloud Remotes Benchmark Results ===${NC}"
 echo
 
 # Create header for the results table
@@ -39,12 +46,12 @@ for RESULT_FILE in ./benchmark_results/*_result.txt; do
 done
 
 echo
-echo "=== End of Benchmark Results ==="
+echo "${BOLD}=== End of Benchmark Results ===${NC}"
 
 # Create a GitHub Actions output summary for better visibility in the Actions UI
 if [ -n "$GITHUB_STEP_SUMMARY" ]; then
     {
-        echo "## Cloud Remotes Benchmark Results"
+        echo "${BOLD}### Cloud Remotes Benchmark Results ###${NC}"
         echo
         echo "| Remote | Status | Upload Time | Upload Speed |"
         echo "| ------ | ------ | ----------- | ----------- |"

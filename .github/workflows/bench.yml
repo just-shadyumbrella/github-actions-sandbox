@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: System information
-      - run: "sudo apt-get update -y;sudo apt-get upgrade -y;sudo apt-get install screenfetch -y;screenfetch"
+        run: sudo apt-get update -y;sudo apt-get upgrade -y;sudo apt-get install screenfetch -y;screenfetch
 
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1

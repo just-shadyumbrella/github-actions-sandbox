@@ -84,10 +84,7 @@ for REMOTE in $REMOTES; do
         echo -e "${RED}Upload to $REMOTE_NAME failed!${NC}"
         echo "Status: FAILED - Upload error" >> "$RESULT_FILE"
     fi
-    
-    # Clean up (remove the uploaded test file from remote)
-    echo "Cleaning up remote..."
-    rclone purge "${REMOTE}benchmark_test/" --quiet
 done
 
-echo -e "\n=== Benchmark completed! Results saved in ./benchmark_results/ ==="
+echo
+echo -e "=== Benchmark completed! Results saved in ./benchmark_results/ ==="

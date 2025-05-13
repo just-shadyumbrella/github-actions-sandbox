@@ -26,7 +26,7 @@ for remote in $remotes; do
     
     # Check the exit status of the command
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Successfully checked ${NC}\"${YELLOW}${remote}\"${NC}"
+        echo -e "${GREEN}Successfully checked ${NC}\"${YELLOW}${remote}${NC}\""
     else
         echo -e "${RED}Error checking \"$remote\"${NC}" >&2
     fi

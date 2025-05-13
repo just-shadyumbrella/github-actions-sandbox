@@ -1,160 +1,93 @@
 #!/bin/bash
 
-# Configuration
-TEST_FILE_URL="https://download.blender.org/demo/movies/BBB/bbb_sunflower_2160p_60fps_normal.mp4.zip"
-LOCAL_TEMP_FILE="/tmp/bbb_testfile.zip"
-UPLOAD_PATH="benchmark_test/bbb_testfile.zip"
-LOG_FILE="/tmp/rclone_benchmark_$(date +%Y%m%d_%H%M%S).log"
+# Benchmark script for testing rclone upload performance to various cloud remotes
+# This script will download a test file and upload it to each configured remote
 
-# Initialize results arrays
-declare -A results     # remote -> time
-declare -A statuses    # remote -> status
-declare -A speeds      # remote -> speed in MB/s
-declare -A sizes       # remote -> actual uploaded size
+set -e  # Exit on error
 
-# Check and install screenfetch if needed
-check_dependencies() {
-    if ! command -v screenfetch &> /dev/null; then
-        echo "Installing screenfetch..."
-        if command -v apt-get &> /dev/null; then
-            sudo apt-get install -y screenfetch
-        elif command -v yum &> /dev/null; then
-            sudo yum install -y screenfetch
-        elif command -v dnf &> /dev/null; then
-            sudo dnf install -y screenfetch
-        elif command -v pacman &> /dev/null; then
-            sudo pacman -Sy --noconfirm screenfetch
-        else
-            echo "Could not install screenfetch automatically. Please install it manually."
-        fi
-    fi
-}
+# Create directory for benchmark results
+mkdir -p ./benchmark_results
 
-# Get system info
-get_system_info() {
-    echo -e "\n\033[1m=== System Information ===\033[0m"
-    if command -v screenfetch &> /dev/null; then
-        screenfetch -v
-    else
-        echo "screenfetch not available. Using basic system info:"
-        uname -a
-        lsb_release -a 2>/dev/null || cat /etc/*release 2>/dev/null
-    fi
-}
+# Color output for better readability
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+NC='\033[0m' # No Color
 
-# Download test file if not already present
-download_test_file() {
-    if [ ! -f "$LOCAL_TEMP_FILE" ]; then
-        echo "Downloading test file..."
-        wget "$TEST_FILE_URL" -O "$LOCAL_TEMP_FILE" || {
-            echo "Error downloading test file!" >&2
-            exit 1
-        }
-    else
-        echo "Using existing test file at $LOCAL_TEMP_FILE"
-    fi
-    
-    # Get file size for reference
-    file_size=$(du -h "$LOCAL_TEMP_FILE" | cut -f1)
-    file_size_bytes=$(stat -c%s "$LOCAL_TEMP_FILE")
-    echo -e "\nTest file size: $file_size ($file_size_bytes bytes)"
-}
+echo "=== Starting Cloud Remotes Benchmark ==="
 
-# Benchmark function
-benchmark_remote() {
-    local remote=$1
-    echo -e "\n\033[1m=== Benchmarking $remote ===\033[0m"
-    
-    # Create benchmark directory
-    rclone mkdir "${remote}benchmark_test" 2>/dev/null
-    
-    # Time the upload
-    echo "Starting upload test..."
-    start_time=$(date +%s.%N)
-    rclone copy -P "$LOCAL_TEMP_FILE" "${remote}${UPLOAD_PATH}"
-    upload_exit=$?
-    end_time=$(date +%s.%N)
-    
-    # Calculate results
-    duration=$(echo "$end_time - $start_time" | bc)
-    if [ $upload_exit -eq 0 ]; then
-        # Get actual uploaded size (in case compression happened)
-        uploaded_size=$(rclone size "${remote}${UPLOAD_PATH}" --json | jq '.bytes')
-        speed=$(echo "scale=2; $uploaded_size / $duration / 1024 / 1024" | bc)
-        
-        echo -e "\n\033[32mUpload successful to $remote\033[0m"
-        echo "Time taken: $duration seconds"
-        echo "Upload speed: $speed MB/s"
-        
-        results["$remote"]=$duration
-        speeds["$remote"]=$speed
-        sizes["$remote"]=$uploaded_size
-        statuses["$remote"]="SUCCESS"
-        
-        # Clean up
-        echo "Cleaning up..."
-        rclone deletefile "${remote}${UPLOAD_PATH}"
-    else
-        echo -e "\n\033[31mUpload failed to $remote\033[0m" >&2
-        statuses["$remote"]="FAILED"
-    fi
-    
-    # Log to file
-    {
-        echo "=== $remote ==="
-        echo "Status: ${statuses[$remote]}"
-        echo "Time: $duration seconds"
-        [ "${statuses[$remote]}" = "SUCCESS" ] && {
-            echo "Speed: $speed MB/s"
-            echo "Size: $uploaded_size bytes"
-        }
-        echo ""
-    } >> "$LOG_FILE"
-}
-
-# Main execution
-{
-    echo "Rclone Benchmark Test - $(date)"
-    echo "Test file: $TEST_FILE_URL"
-    echo "Local path: $LOCAL_TEMP_FILE"
-    get_system_info >> "$LOG_FILE"
-} > "$LOG_FILE"
-
-# Check dependencies
-check_dependencies
-
-# Download test file
-download_test_file
-
-# Get list of remotes
-echo -e "\nListing all rclone remotes..."
-remotes=$(rclone listremotes)
-
-if [ -z "$remotes" ]; then
-    echo "No rclone remotes found!" >&2
+# Get list of configured remotes
+REMOTES=$(rclone listremotes)
+if [ -z "$REMOTES" ]; then
+    echo -e "${RED}No remotes configured in rclone. Please check your configuration.${NC}"
     exit 1
 fi
 
-# Benchmark each remote
-for remote in $remotes; do
-    benchmark_remote "$remote"
-    echo "----------------------------------------"
+# Download test file if it doesn't exist
+TEST_FILE="bbb_sunflower_2160p_60fps_normal.mp4.zip"
+if [ ! -f "$TEST_FILE" ]; then
+    echo -e "${YELLOW}Downloading test file: $TEST_FILE${NC}"
+    curl -L -o "$TEST_FILE" "https://download.blender.org/demo/movies/BBB/bbb_sunflower_2160p_60fps_normal.mp4.zip"
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Failed to download test file!${NC}"
+        exit 1
+    fi
+fi
+
+# Get file size for calculation of transfer rate
+FILE_SIZE=$(du -b "$TEST_FILE" | cut -f1)
+FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE/1048576" | bc)
+echo -e "Test file size: ${YELLOW}${FILE_SIZE_MB} MB${NC}"
+
+# Run benchmark for each remote
+echo "=== Running upload benchmark for each remote ==="
+
+for REMOTE in $REMOTES; do
+    REMOTE_NAME="${REMOTE%:}"
+    LOG_FILE="./benchmark_results/${REMOTE_NAME}_benchmark.log"
+    RESULT_FILE="./benchmark_results/${REMOTE_NAME}_result.txt"
+    
+    echo -e "\nTesting remote: ${YELLOW}$REMOTE_NAME${NC}"
+    echo "Remote: $REMOTE_NAME" > "$RESULT_FILE"
+    
+    # Try to create a test directory for the benchmark
+    echo "Creating test directory..."
+    if ! rclone mkdir "${REMOTE}benchmark_test"; then
+        echo -e "${RED}Failed to create directory in remote $REMOTE_NAME. Skipping.${NC}"
+        echo "Status: FAILED - Could not create directory" >> "$RESULT_FILE"
+        continue
+    fi
+    
+    # Start timer
+    START_TIME=$(date +%s.%N)
+    
+    # Upload test file to remote
+    echo "Uploading test file..."
+    if rclone copy "$TEST_FILE" "${REMOTE}benchmark_test/" --progress 2>&1 | tee "$LOG_FILE"; then
+        # End timer and calculate duration
+        END_TIME=$(date +%s.%N)
+        DURATION=$(echo "$END_TIME - $START_TIME" | bc)
+        DURATION_FORMATTED=$(printf "%.2f" $DURATION)
+        
+        # Calculate upload speed in MB/s
+        SPEED=$(echo "scale=2; $FILE_SIZE_MB / $DURATION" | bc)
+        
+        echo -e "${GREEN}Upload to $REMOTE_NAME completed successfully!${NC}"
+        echo -e "Time taken: ${YELLOW}${DURATION_FORMATTED} seconds${NC}"
+        echo -e "Upload speed: ${YELLOW}${SPEED} MB/s${NC}"
+        
+        # Save results
+        echo "Status: SUCCESS" >> "$RESULT_FILE"
+        echo "Upload Time: $DURATION_FORMATTED seconds" >> "$RESULT_FILE"
+        echo "Upload Speed: $SPEED MB/s" >> "$RESULT_FILE"
+    else
+        echo -e "${RED}Upload to $REMOTE_NAME failed!${NC}"
+        echo "Status: FAILED - Upload error" >> "$RESULT_FILE"
+    fi
+    
+    # Clean up (remove the uploaded test file from remote)
+    echo "Cleaning up remote..."
+    rclone purge "${REMOTE}benchmark_test/" --quiet
 done
 
-# Display summary
-echo -e "\n\033[1m=== Benchmark Summary ===\033[0m"
-printf "%-20s %-10s %-12s %-12s %-15s\n" "REMOTE" "STATUS" "TIME (sec)" "SPEED (MB/s)" "SIZE (MB)"
-printf "%-20s %-10s %-12s %-12s %-15s\n" "------" "------" "---------" "-----------" "---------"
-
-for remote in "${!results[@]}"; do
-    size_mb=$(echo "scale=2; ${sizes[$remote]} / 1024 / 1024" | bc)
-    printf "%-20s %-10s %-12.2f %-12.2f %-15.2f\n" \
-        "$remote" \
-        "${statuses[$remote]}" \
-        "${results[$remote]}" \
-        "${speeds[$remote]}" \
-        "$size_mb"
-done | sort -k3n  # Sort by upload time
-
-echo -e "\nDetailed log saved to: $LOG_FILE"
-echo -e "\nSystem information:\n$(cat "$LOG_FILE" | grep -A 15 "System Information")"
+echo -e "\n=== Benchmark completed! Results saved in ./benchmark_results/ ==="

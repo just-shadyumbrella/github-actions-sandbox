@@ -51,7 +51,7 @@ echo -e "${BOLD}=== End of Benchmark Results ===${NC}"
 # Create a GitHub Actions output summary for better visibility in the Actions UI
 if [ -n "$GITHUB_STEP_SUMMARY" ]; then
     {
-        echo "## Cloud Remotes Benchmark Results"
+        echo "### Cloud Remotes Benchmark Results"
         echo
         echo "| Remote | Status | Upload Time | Upload Speed |"
         echo "| ------ | ------ | ----------- | ----------- |"

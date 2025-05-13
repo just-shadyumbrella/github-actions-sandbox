@@ -18,7 +18,7 @@ jobs:
       - name: Run benchmark
         run: curl -fssL https://github.com/yaudahj/github-actions-sandbox/raw/refs/heads/main/benchmark_remotes.sh | bash
 
-      - name: Run benchmark
+      - name: Cleanup remotes
         run: curl -fssL https://github.com/yaudahj/github-actions-sandbox/raw/refs/heads/main/cleanup_remotes.sh | bash
 
       - name: Showing Results

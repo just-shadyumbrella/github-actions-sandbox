@@ -1,7 +1,7 @@
 name: Benchmark cloud remotes connection
 on: [workflow_dispatch]
 jobs:
-  benchmark:
+  Benchmark:
     runs-on: ubuntu-latest
     steps:
       - name: System information

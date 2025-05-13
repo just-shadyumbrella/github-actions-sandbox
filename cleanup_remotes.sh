@@ -26,7 +26,7 @@ for remote in $remotes; do
     
     # Check the exit status of the command
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Successfully purge ${NC}\"${YELLOW}${remote}\"${NC}"
+        echo -e "${GREEN}Successfully purge ${NC}\"${YELLOW}${remote}${NC}\""
     else
         echo -e "${RED}Error purge \"$remote\"${NC}" >&2
     fi

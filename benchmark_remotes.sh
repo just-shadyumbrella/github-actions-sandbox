@@ -9,12 +9,13 @@ set -e  # Exit on error
 mkdir -p ./benchmark_results
 
 # Color output for better readability
+BOLD='\033[1m'
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
-echo "=== Starting Cloud Remotes Benchmark ==="
+echo "${BOLD}=== Starting Cloud Remotes Benchmark ===${NC}"
 
 # Get list of configured remotes
 REMOTES=$(rclone listremotes)
@@ -40,14 +41,15 @@ FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE/1048576" | bc)
 echo -e "Test file size: ${YELLOW}${FILE_SIZE_MB} MB${NC}"
 
 # Run benchmark for each remote
-echo "=== Running upload benchmark for each remote ==="
+echo "${BOLD}=== Running upload benchmark for each remote ===${BOLD}"
 
 for REMOTE in $REMOTES; do
     REMOTE_NAME="${REMOTE%:}"
     LOG_FILE="./benchmark_results/${REMOTE_NAME}_benchmark.log"
     RESULT_FILE="./benchmark_results/${REMOTE_NAME}_result.txt"
     
-    echo -e "\nTesting remote: ${YELLOW}$REMOTE_NAME${NC}"
+    echo
+    echo -e "Testing remote: ${YELLOW}$REMOTE_NAME${NC}"
     echo "Remote: $REMOTE_NAME" > "$RESULT_FILE"
     
     # Try to create a test directory for the benchmark
@@ -87,4 +89,4 @@ for REMOTE in $REMOTES; do
 done
 
 echo
-echo -e "=== Benchmark completed! Results saved in ./benchmark_results/ ==="
+echo -e "${BOLD}=== Benchmark completed! Results saved in ./benchmark_results/ ===${NC}"

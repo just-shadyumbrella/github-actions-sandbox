@@ -3,7 +3,7 @@
 # Benchmark script for testing rclone upload performance to various cloud remotes
 # This script will download a test file and upload it to each configured remote
 
-set -e  # Exit on error
+#set -e  # Exit on error
 
 # Create directory for benchmark results
 mkdir -p ./benchmark_results
@@ -15,7 +15,7 @@ RED='\033[0;31m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
-echo "${BOLD}=== Starting Cloud Remotes Benchmark ===${NC}"
+echo -e "${BOLD}=== Starting Cloud Remotes Benchmark ===${NC}"
 
 # Get list of configured remotes
 REMOTES=$(rclone listremotes)

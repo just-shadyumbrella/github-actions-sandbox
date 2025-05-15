@@ -8,7 +8,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 # Get list of remotes
-echo -e "${BOLD}=== List of available rclone remotes: ===${BOLD}"
+echo -e "${BOLD}=== List of available rclone remotes: ===${NC}"
 remotes=$(rclone listremotes)
 echo $remotes
 

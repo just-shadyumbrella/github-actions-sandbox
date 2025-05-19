@@ -1,5 +1,9 @@
 name: Benchmark cloud remotes connection
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:  # Manual trigger
+  schedule:
+    # Run at midnight (00:00) and every 4 hours (04:00, 08:00, 12:00, 16:00, 20:00)
+    - cron: '0 0,4,8,12,16,20 * * *'
 jobs:
   Benchmark:
     runs-on: ubuntu-latest

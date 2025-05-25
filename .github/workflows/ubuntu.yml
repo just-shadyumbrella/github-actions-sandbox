@@ -6,4 +6,9 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-    - run: sudo apt-get update;sudo apt-get install screenfetch cpufetch neofetch;screenfetch neofetch cpufetch;
+      - name: Setup
+        run: sudo apt-get update;sudo apt-get install screenfetch cpufetch neofetch;
+        
+      - run: screenfetch
+      - run: neofetch
+      - run: cpufetch

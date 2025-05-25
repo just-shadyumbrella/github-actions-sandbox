@@ -6,4 +6,4 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-    - run: sudo apt-get update;sudo apt-get install fastfetch cpufetch countryfetch;fastfetch cpufetch countryfetch;
+    - run: sudo apt-get update;sudo apt-get install screenfetch cpufetch neofetch;screenfetch neofetch cpufetch;

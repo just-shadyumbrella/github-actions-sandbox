@@ -6,6 +6,4 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-     - uses: fawazahmed0/action-debug@main
-
-     - run: sleep 3600
+    - run: sudo apt-get update;sudo apt-get install fastfetch cpufetch countryfetch;fastfetch cpufetch countryfetch;

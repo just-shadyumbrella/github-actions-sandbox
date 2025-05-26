@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: System information
-        run: sudo apt-get update -y;sudo apt-get install neofetch -y;neofetch
+        run: sudo apt-get update -y;sudo apt-get install neofetch cpufetch -y;neofetch;cpufetch
 
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1

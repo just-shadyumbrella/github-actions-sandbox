@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 # Get list of remotes
 echo -e "${BOLD}=== List of available rclone remotes: ===${BOLD}"
 remotes=$(rclone listremotes)
-echo $remotes
+echo -e ${YELLOW}${remotes}${NC}
 
 # Check if no remotes found
 if [ -z "$remotes" ]; then

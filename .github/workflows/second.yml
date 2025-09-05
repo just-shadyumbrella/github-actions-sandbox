@@ -1,0 +1,21 @@
+name: Second Test
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
+      - uses: AnimMouse/setup-ffmpeg@v1
+        with:
+          version: master
+
+      - uses: AnimMouse/setup-yt-dlp@v3
+
+      - name: Setup
+        run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

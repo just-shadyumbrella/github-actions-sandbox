@@ -3,10 +3,15 @@ on:
   workflow_dispatch:
   push:
 
+concurrency:
+  group: ttyd
+  cancel-in-progress: true
+
 jobs:
   job:
     runs-on: ubuntu-latest
     steps:
+      - run: sudo apt-get update;sudo apt install ttyd
       - uses: AnimMouse/setup-rclone@v1
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
@@ -20,7 +25,7 @@ jobs:
       - uses: AnimMouse/setup-cloudflared@v2
 
       - run: ttyd -W -p 8000 bash || true
-      - run: curl http://127.0.0.1:8000; cloudflared tunnel --url http://127.0.0.1:8000
+      - run: curl http://127.0.0.1:8000;cloudflared tunnel --url http://127.0.0.1:8000
 
       - name: Setup
         run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

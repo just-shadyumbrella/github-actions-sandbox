@@ -1,7 +1,7 @@
 name: TTYD Windows
 on:
   workflow_dispatch:
-  push:
+  # push:
 
 concurrency:
   group: ttyd_win
@@ -11,15 +11,15 @@ jobs:
   job:
     runs-on: windows-latest
     steps:
-      # - uses: AnimMouse/setup-rclone@v1
-      #   with:
-      #     rclone_config: ${{ secrets.RCLONE_CONFIG }}
+      - uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
-      # - uses: AnimMouse/setup-ffmpeg@v1
-      #   with:
-      #     version: master
+      - uses: AnimMouse/setup-ffmpeg@v1
+        with:
+          version: master
 
-      # - uses: AnimMouse/setup-yt-dlp@v3
+      - uses: AnimMouse/setup-yt-dlp@v3
 
       - uses: AnimMouse/setup-cloudflared@v2
 

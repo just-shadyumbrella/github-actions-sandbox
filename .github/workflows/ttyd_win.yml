@@ -21,7 +21,7 @@ jobs:
 
       # - uses: AnimMouse/setup-yt-dlp@v3
 
-      # - uses: AnimMouse/setup-cloudflared@v2
+      - uses: AnimMouse/setup-cloudflared@v2
 
       - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
       - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe

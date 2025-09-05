@@ -26,21 +26,5 @@ jobs:
       - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
       - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
       - run: |
-          Start-Process -FilePath ".\ttyd.exe" -ArgumentList "-W -p 12345 cmd" -NoNewWindow
-          $maxAttempts = 10
-          $attempt = 0
-          $success = $false
-          while ($attempt -lt $maxAttempts -and -not $success) {
-            try {
-              $response = Invoke-WebRequest -Uri http://localhost:12345 -TimeoutSec 2
-              $success = $true
-            } catch {
-              Start-Sleep -Seconds 2
-              $attempt++
-            }
-          }
-          if (-not $success) {
-            Write-Error "ttyd did not start in time."
-            exit 1
-          }
+          Start-Process -NoNewWindow -ArgumentList "-W -p 8000 cmd" .\ttyd | curl http://127.0.0.1:8000
           Start-Process -FilePath "cloudflared.exe" -ArgumentList "tunnel --url http://localhost:12345"

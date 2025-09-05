@@ -30,6 +30,3 @@ jobs:
           sudo systemctl start ssh
 
       - run: cloudflared tunnel --url ssh://localhost:22
-
-      - name: Setup
-        run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

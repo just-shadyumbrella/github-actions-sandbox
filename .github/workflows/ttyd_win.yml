@@ -24,5 +24,5 @@ jobs:
       - uses: AnimMouse/setup-cloudflared@v2
 
       - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
-      - run: ttyd -W -p 8000 bash > ttyd.log 2>&1 &
+      - run: ttyd -W -p 8000 cmd > ttyd.log 2>&1 &
       - run: curl http://127.0.0.1:8000; cloudflared tunnel --url http://127.0.0.1:8000

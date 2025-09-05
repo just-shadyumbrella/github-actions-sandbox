@@ -1,7 +1,11 @@
-name: Second Test
+name: SSHD
 on:
   workflow_dispatch:
   # push:
+
+concurrency:
+  group: sshd
+  cancel-in-progress: true
 
 jobs:
   job:
@@ -18,13 +22,12 @@ jobs:
       - uses: AnimMouse/setup-yt-dlp@v3
 
       - uses: AnimMouse/setup-cloudflared@v2
-
-      - uses: appleboy/ssh-action@v1
-        with:
-          host: localhost
-          username: foo
-          password: bar
-          script: bash
+        
+      - name: Setup SSH server
+        run: |
+          echo "$(whoami):123" | sudo chpasswd
+          sudo systemctl enable ssh
+          sudo systemctl start ssh
 
       - run: cloudflared tunnel --url ssh://localhost:22
 

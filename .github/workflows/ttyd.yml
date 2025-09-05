@@ -1,7 +1,7 @@
-name: Second Test
+name: TTYD
 on:
   workflow_dispatch:
-  # push:
+  push:
 
 jobs:
   job:
@@ -19,14 +19,8 @@ jobs:
 
       - uses: AnimMouse/setup-cloudflared@v2
 
-      - uses: appleboy/ssh-action@v1
-        with:
-          host: localhost
-          username: foo
-          password: bar
-          script: bash
-
-      - run: cloudflared tunnel --url ssh://localhost:22
+      - run: ttyd -W -p 8000 bash || true
+      - run: cloudflared tunnel --url http://localhost:8000
 
       - name: Setup
         run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

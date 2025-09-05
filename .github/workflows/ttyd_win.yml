@@ -1,7 +1,7 @@
 name: TTYD Windows
 on:
   workflow_dispatch:
-  # push:
+  push:
 
 concurrency:
   group: ttyd_win
@@ -11,20 +11,36 @@ jobs:
   job:
     runs-on: windows-latest
     steps:
-      - uses: AnimMouse/setup-rclone@v1
-        with:
-          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+      # - uses: AnimMouse/setup-rclone@v1
+      #   with:
+      #     rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
-      - uses: AnimMouse/setup-ffmpeg@v1
-        with:
-          version: master
+      # - uses: AnimMouse/setup-ffmpeg@v1
+      #   with:
+      #     version: master
 
-      - uses: AnimMouse/setup-yt-dlp@v3
+      # - uses: AnimMouse/setup-yt-dlp@v3
 
-      - uses: AnimMouse/setup-cloudflared@v2
+      # - uses: AnimMouse/setup-cloudflared@v2
 
       - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
-      - run: Start-Process -FilePath ".\ttyd.exe" -ArgumentList "-W -p 12345 cmd" -NoNewWindow
+      - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
       - run: |
-          $response = Invoke-WebRequest -Uri http://localhost:12345
-          Start-Process -FilePath "cloudflared.exe" -ArgumentList "tunnel --url http://localhost:12345" -NoNewWindow
+          Start-Process -FilePath ".\ttyd.exe" -ArgumentList "-W -p 12345 cmd" -NoNewWindow
+          $maxAttempts = 10
+          $attempt = 0
+          $success = $false
+          while ($attempt -lt $maxAttempts -and -not $success) {
+            try {
+              $response = Invoke-WebRequest -Uri http://localhost:12345 -TimeoutSec 2
+              $success = $true
+            } catch {
+              Start-Sleep -Seconds 2
+              $attempt++
+            }
+          }
+          if (-not $success) {
+            Write-Error "ttyd did not start in time."
+            exit 1
+          }
+          Start-Process -FilePath "cloudflared.exe" -ArgumentList "tunnel --url http://localhost:12345"

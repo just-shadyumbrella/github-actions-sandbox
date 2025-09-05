@@ -21,12 +21,12 @@ jobs:
 
       - uses: appleboy/ssh-action@v1
         with:
-          host: 127.0.0.1
+          host: localhost
           username: foo
           password: bar
           script: bash
-          
-      - run: cloudflared tunnel --url ssh://127.0.0.1:22
+
+      - run: cloudflared tunnel --url ssh://localhost:22
 
       - name: Setup
         run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

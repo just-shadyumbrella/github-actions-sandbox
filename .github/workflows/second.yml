@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  setup:
+  job:
     runs-on: ubuntu-latest
     steps:
       - uses: AnimMouse/setup-rclone@v1
@@ -16,6 +16,17 @@ jobs:
           version: master
 
       - uses: AnimMouse/setup-yt-dlp@v3
+
+      - uses: AnimMouse/setup-cloudflared@v2
+
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: 127.0.0.1
+          username: foo
+          password: bar
+          script: bash
+          
+      - run: cloudflared tunnel --url ssh://127.0.0.1:22
 
       - name: Setup
         run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

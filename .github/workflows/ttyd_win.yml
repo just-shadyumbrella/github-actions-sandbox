@@ -1,0 +1,28 @@
+name: TTYD Windows
+on:
+  workflow_dispatch:
+  # push:
+
+concurrency:
+  group: ttyd_win
+  cancel-in-progress: true
+
+jobs:
+  job:
+    runs-on: windows-latest
+    steps:
+      - uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
+      - uses: AnimMouse/setup-ffmpeg@v1
+        with:
+          version: master
+
+      - uses: AnimMouse/setup-yt-dlp@v3
+
+      - uses: AnimMouse/setup-cloudflared@v2
+
+      - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
+      - run: ttyd -W -p 8000 bash > ttyd.log 2>&1 &
+      - run: curl http://127.0.0.1:8000; cloudflared tunnel --url http://127.0.0.1:8000

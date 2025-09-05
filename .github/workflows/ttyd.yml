@@ -20,7 +20,7 @@ jobs:
       - uses: AnimMouse/setup-cloudflared@v2
 
       - run: ttyd -W -p 8000 bash || true
-      - run: cloudflared tunnel --url http://localhost:8000
+      - run: curl http://127.0.0.1:8000; cloudflared tunnel --url http://127.0.0.1:8000
 
       - name: Setup
         run: curl -fsSL ${{ secrets.DISSOLVE }} | bash

@@ -1,7 +1,7 @@
 name: TTYD Windows
 on:
   workflow_dispatch:
-  push:
+  # push:
 
 concurrency:
   group: ttyd_win
@@ -23,9 +23,8 @@ jobs:
 
       - uses: AnimMouse/setup-cloudflared@v2
 
-      - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ./ttyd.exe
-      - run: .\ttyd;cmd
-      # - run: Start-Process -FilePath ".\ttyd.exe" -ArgumentList "-W -p 8000 pwsh" -NoNewWindow
-      # - run: |
-      #     $response = Invoke-WebRequest -Uri http://127.0.0.1:8000
-      #     Start-Process -FilePath "cloudflared.exe" -ArgumentList "tunnel --url http://127.0.0.1:8000" -NoNewWindow
+      - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
+      - run: Start-Process -FilePath ".\ttyd.exe" -ArgumentList "-W -p 12345 cmd" -NoNewWindow
+      - run: |
+          $response = Invoke-WebRequest -Uri http://localhost:12345
+          Start-Process -FilePath "cloudflared.exe" -ArgumentList "tunnel --url http://localhost:12345" -NoNewWindow

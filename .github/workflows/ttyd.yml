@@ -9,6 +9,7 @@ concurrency:
 
 jobs:
   job:
+    name: My job
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get update;sudo apt install ttyd

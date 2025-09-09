@@ -1,0 +1,13 @@
+name: VSCode Server
+on: workflow_dispatch
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+    - name: 🐛 Debug Build
+      uses: stateful/vscode-server-action@v1
+      if: failure()

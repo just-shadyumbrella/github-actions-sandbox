@@ -9,6 +9,7 @@ concurrency:
 
 jobs:
   job:
+    name: My job
     runs-on: windows-latest
     steps:
       - uses: AnimMouse/setup-rclone@v1

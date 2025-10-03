@@ -25,5 +25,4 @@ jobs:
       - uses: AnimMouse/setup-cloudflared@v2
 
       - run: curl -L https://github.com/tsl0922/ttyd/releases/latest/download/ttyd.win32.exe -o ttyd.exe
-      - run: "[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; &$([scriptblock]::Create((New-Object System.Net.WebClient).DownloadString('https://lets.tunshell.com/init.ps1'))) T 8eUymlQILKMx38r9GYXANh OuEtS9E7bMNir3DyrFHVmQ eu.relay.tunshell.com"
-      #- run: Start-Process -NoNewWindow -ArgumentList "-W -p 8000 pwsh" .\ttyd | curl http://127.0.0.1:8000 | cloudflared tunnel --url http://127.0.0.1:8000
+      - run: Start-Process -NoNewWindow -ArgumentList "-W -p 8000 systeminfo" .\ttyd | curl http://127.0.0.1:8000 | cloudflared tunnel --url http://127.0.0.1:8000
